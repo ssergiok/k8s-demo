@@ -1,0 +1,25 @@
+name: Minikube Deployment
+on:
+  - push
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build and deploy to minikube
+    steps:
+    - uses: actions/checkout@v2
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+    - name: Try the cluster !
+      run: kubectl get pods -A      
+    - name: Deploy to minikube
+      run:
+        kubectl apply -f postgres-config.yaml
+        kubectl apply -f postgres-secret.yaml
+        kubectl apply -f postgres-v1.yaml
+        kubectl apply -f webapp-v1.yaml
+    - name: Test service URLs
+      run: |
+        minikube service list
+        minikube service example --url
+        echo "------------------opening the service------------------"
+        curl $(minikube service example --url)        
