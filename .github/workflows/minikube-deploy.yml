@@ -18,10 +18,7 @@ jobs:
     - name: Deploy to minikube
       run: |
         kubectl apply -f git-servicio.yaml
-        kubectl apply -f postgres-config.yaml
-        kubectl apply -f postgres-secret.yaml
-        kubectl apply -f postgres-v1.yaml
-        kubectl apply -f webapp-v1.yaml
+
     - name: Test service URLs
       run: |
         minikube service list
